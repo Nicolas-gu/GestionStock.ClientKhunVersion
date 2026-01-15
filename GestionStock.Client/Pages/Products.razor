@@ -1,31 +1,141 @@
 ﻿@page "/product"
 @using GestionStock.Client.Models
+@using System.Linq
+
+@inject NavigationManager Nav
 
 <PageTitle>Products</PageTitle>
 
-<h1>Liste des articles en stock</h1>
+<MudContainer MaxWidth="MaxWidth.False">
+    <MudPaper Style="padding:30px;">
 
-@if(_products != null)
-{
-    <div>
-        @foreach (ProductsResponse p in _products)
+        <MudGrid AlignItems="AlignItems.Center" Spacing="2">
+
+            <MudItem xs="12" md="6">
+                <MudText Typo="Typo.h4">Liste des articles en stock</MudText>
+            </MudItem>
+
+            <MudItem xs="12" md="6" Class="d-flex justify-end align-center">
+                <div style="display:flex; gap:12px; flex-wrap:nowrap; align-items:center;">
+                    <MudButton Href="/product/add"
+                               Color="Color.Primary"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.Add">
+                        Ajouter
+                    </MudButton>
+
+                    <MudButton Href="/"
+                               Color="Color.Primary"
+                               Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.Home">
+                        Accueil
+                    </MudButton>
+                </div>
+            </MudItem>
+
+        </MudGrid>
+
+        <MudDivider Class="my-4" />
+
+        @if (_products != null)
         {
-            <div>
-                <p>@p.Name</p>
-            </div>
-        }
-    </div>
-}
+            <MudGrid Spacing="3">
+                @foreach (ProductsResponse p in _products)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="2">
+                        <MudCard Class="mud-elevation-2 hover-elevation clickable-card product-card"
+                                 Style="height:100%; transition:0.2s; transform:translateY(0);"
+                                 @onclick="@(() => Nav.NavigateTo($"/product/details/{p.Id}"))">
 
-<MudButton Href="/product/add"
-           Color="Color.Info"
-           Variant="Variant.Filled"
-           EndIcon="@Icons.Material.Filled.Save">
-    Ajouter un article
-</MudButton>
-<MudButton Href="/"
-           Color="Color.Info"
-           Variant="Variant.Filled"
-           EndIcon="@Icons.Material.Filled.Home">
-    Page d'accueil
-</MudButton>
+                            <MudCardHeader>
+                                <CardHeaderContent>
+
+                                    <div class="header-row">
+                                        <MudText Typo="Typo.body1" Class="header-title">
+                                            @p.Name
+                                        </MudText>
+
+                                        <MudText Typo="Typo.body1" Class="header-price">
+                                            € @p.Price
+                                        </MudText>
+                                    </div>
+
+                                    <MudText Typo="Typo.body2" Class="truncate-1">
+                                        @* @($"{p.Categories.Count} catégorie(s)") *@
+                                    </MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+
+                            <MudCardMedia Image="@p.ImageUrl" Height="250" />
+
+                            <MudCardContent>
+                                <MudText Typo="Typo.body2" Class="truncate-3">@p.Description</MudText>
+                            </MudCardContent>
+
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+        <div class="d-flex flex-column align-center">
+            <MudPagination Rectangular="true" Variant="Variant.Filled" Count="6" Class="my-4" />
+        </div>
+
+    </MudPaper>
+</MudContainer>
+
+<style>
+    .clickable-card {
+        cursor: pointer;
+    }
+
+    .hover-elevation:hover {
+        transform: translateY(-6px);
+        box-shadow: 0px 12px 30px rgba(0,0,0,0.20);
+    }
+
+    .product-card {
+        overflow: hidden;
+    }
+
+    .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        width: 100%;
+        overflow: hidden;
+        min-width: 0;
+    }
+
+    .header-title {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: 600;
+        display: block;
+    }
+
+    .header-price {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        font-weight: 700;
+        display: block;
+    }
+
+    .truncate-1 {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .truncate-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+       
+</style>
