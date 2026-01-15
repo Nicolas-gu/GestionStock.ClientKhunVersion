@@ -4,12 +4,15 @@
 {
 @* Balise nécessaire pour les formulaires *@
 <EditForm Model="_form" OnValidSubmit="OnSubmit">
+    <DataAnnotationsValidator />
     <MudGrid Class="pa-8" Spacing="8">
         <MudItem sm="12" md="6">
             <MudTextField 
                 Label="Nom du produit"
                 Variant="Variant.Outlined" 
-                @bind-Value="_form.Name"></MudTextField>
+                @bind-Value="_form.Name"
+                For="() => _form.Name"
+            ></MudTextField>
         </MudItem>
 
         <MudItem sm="12" md="6">
@@ -38,13 +41,15 @@
                 Label="Prix"    
                 Variant="Variant.Outlined"
                 @bind-Value="_form.Price"
+                For="() => _form.Price"
             />
         </MudItem>
         <MudItem sm="12" md="6">
-            <MudNumericField Label="Quantité"
-                          Variant="Variant.Outlined"
-                          @bind-Value="_form.Quantity"
-                          />
+            <MudNumericField 
+                Label="Quantité"
+                Variant="Variant.Outlined"
+                @bind-Value="_form.Quantity"
+                For="() => _form.Quantity" />
         </MudItem>
         <MudItem sm="12" md="6">
             <MudFileUpload 
