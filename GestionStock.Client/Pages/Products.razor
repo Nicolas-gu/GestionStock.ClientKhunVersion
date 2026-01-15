@@ -1,0 +1,31 @@
+﻿@page "/product"
+@using GestionStock.Client.Models
+
+<PageTitle>Products</PageTitle>
+
+<h1>Liste des articles en stock</h1>
+
+@if(_products != null)
+{
+    <div>
+        @foreach (ProductsResponse p in _products)
+        {
+            <div>
+                <p>@p.Name</p>
+            </div>
+        }
+    </div>
+}
+
+<MudButton Href="/product/add"
+           Color="Color.Info"
+           Variant="Variant.Filled"
+           EndIcon="@Icons.Material.Filled.Save">
+    Ajouter un article
+</MudButton>
+<MudButton Href="/"
+           Color="Color.Info"
+           Variant="Variant.Filled"
+           EndIcon="@Icons.Material.Filled.Home">
+    Page d'accueil
+</MudButton>

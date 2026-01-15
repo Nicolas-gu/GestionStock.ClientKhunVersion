@@ -1,5 +1,7 @@
 ﻿using GestionStock.Client.Models;
+using GestionStock.Client.Pages;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Net.Http.Json;
 
 namespace GestionStock.Client.Services
 {
@@ -32,6 +34,12 @@ namespace GestionStock.Client.Services
             }
             
             await httpClient.PostAsync("/api/product", content);
+        }
+
+        public async Task<List<ProductsResponse>?> GetAllProducts()
+        {
+            var response = await httpClient.GetFromJsonAsync<List<ProductsResponse>>("/api/product");
+            return response;
         }
     }
 }
