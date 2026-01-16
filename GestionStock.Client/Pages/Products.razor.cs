@@ -1,6 +1,7 @@
 ﻿using GestionStock.Client.Models;
 using GestionStock.Client.Services;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace GestionStock.Client.Pages
 {
@@ -23,5 +24,20 @@ namespace GestionStock.Client.Pages
 
             }
         }
+
+        private MudMessageBox _mudMessageBox;
+
+        private async Task OnButtonClickedAsync(int id)
+        {
+            bool? result = await _mudMessageBox.ShowAsync();
+            if(result == true)
+            {
+                await ProductService.Delete(id);
+                _products = await ProductService.GetAllProducts();
+            }
+            StateHasChanged();
+        }
+
+     
     }
 }
